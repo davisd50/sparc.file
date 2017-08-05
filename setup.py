@@ -8,9 +8,9 @@ TESTS_REQUIRE = [
     'zope.testrunner'
     ]
 
-setup(name='sparc.tail',
+setup(name='sparc.file',
       version=version,
-      description="File tailing components for the SPARC platform",
+      description="File components for the SPARC platform",
       long_description=open("README.md").read() + "\n" +
                        open("HISTORY.txt").read(),
       # Get more strings from
@@ -28,7 +28,7 @@ setup(name='sparc.tail',
       keywords=['zca'],
       author='David Davis',
       author_email='davisd50@gmail.com',
-      url='https://github.com/davisd50/sparc.tail',
+      url='https://github.com/davisd50/sparc.file',
       download_url = '',
       license='MIT',
       packages=find_packages(exclude=['ez_setup']),
