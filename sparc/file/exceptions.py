@@ -1,0 +1,2 @@
+class SparcFileBookmarkIndexError(Exception):
+    pass

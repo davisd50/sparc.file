@@ -29,7 +29,13 @@ class ISparcUnicodeFileContent(ISparcFileContent):
         """
 
 # Files
-class ISparcFileReader(interface.Interface):
+class ISparcFile(interface.Interface):
+    def __str__():
+        """Informal name of file"""
+    def __repr__(other):
+        """File identity"""
+
+class ISparcFileReader(ISparcFile):
     """Returns ISparcFileContent provider for read method(s)."""
     def read(self, size):
         """See Python file-like object interface."""
@@ -48,24 +54,43 @@ class ISparcUnicodeFile(ISparcFileReader):
     def next():
         """See Python file-like object interface"""
 
-# Bookmark
-class ISparcBookmark(interface.Interface):
-    def offset():
-        """Returns integer offset of last book mark set() call
+
+class ISparcFileContentsLocator(interface.Interface):
+    def find(file, contents, end=False):
+        """Position ISparcFileReader to first instance of matched contents.
         
-        If set() has not been called, or can not be located then 0 is returned.
+        Search starts at current ISparcFileReader provider position and 
+        continues to EOF.  ISparcFileReader provider position is unchanged if
+        contents can not be located.
+        
+        Args:
+            file: ISparcFileReader provider
+            contents: sequence of ISparcFileContent providers to match
+            end: True indicates to position ISparcFileReader at end of contents
+                 sequence, else position at beginning.
+        Rasies:
+            ValueError if contents can not be located in ISparcFileReader provider
         """
-    def set(offset):
-        """Set the book mark at integer offset.
+
+# Bookmark
+class ISparcFileReaderWithBookmark(ISparcFileReader):
+    def set_bookmark():
+        """Set the book mark position."""
+    def goto_bookmark():
+        """Go to the last position marked by set() or initial file position
+        if set() has not yet been called.
+        
+        Raises:
+            SparcFileBookmarkIndexError if set() position can not be found.
         """
 
 # Tail
-class ISparcFileTail(interface.Interface):
+class ISparcFileReaderTail(interface.Interface):
     """Tail a file reader"""
     def tail(reader):
         """Tail a ISparcFileReader provider
         
-        Emits ISparcContentAvailableEvent events for new content in reader
+        Emits ISparcContentAvailableEvent event for new content in reader
         
         Args:
             reader: ISparcFileReader provider
